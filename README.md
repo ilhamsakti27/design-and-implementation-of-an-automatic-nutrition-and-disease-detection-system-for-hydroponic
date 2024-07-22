@@ -74,11 +74,11 @@ In the model building process, the first step is to load the dataset, then divid
 #### A. Connect the Raspberry Pi with the computer
 **With Cable**  
 1. Use a microHDMI to HDMI & Video Capture cable to connect the Raspberry Pi with a computer as shown below.   
-  <img alt="connect raspberryPi to laptop" src="./images/connect%20raspberryPi%20to%20laptop.jpg" width="500" />  
+    <img alt="connect raspberryPi to laptop" src="./images/connect%20raspberryPi%20to%20laptop.jpg" width="500" />  
 2. Open the OBS Studio app.
 3. Select the source and double-click "Video Capture Device".
 4. Select the "USB Video" device and click "Activate" and click "OK".  
-  <img alt="pop up property" src="./images/popUp OBS.png" width="500" />  
+    <img alt="pop up property" src="./images/popUp OBS.png" width="500" />  
 5. Use a mouse and keyboard to operate the Raspberry Pi.
 
 **Remote**
