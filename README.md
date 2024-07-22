@@ -83,30 +83,79 @@ In the model building process, the first step is to load the dataset, then divid
 
 **Remote**
 1. To access the Raspberry Pi remotely, you can use XRDP.  
-2 Update system packages & install XRDP
-  ```bash
-  sudo apt update
-  sudo apt upgrade
-  sudo apt install xrdp
-  ```
-3 Check the IP address of Raspbery Pi.  
-  ```bash
-  hostname -I
-  or
-  ip -br a
-  ```
-4 Open the Remote Desktop Connection application and enter the Raspberry Pi IP then click “Connect” and “Yes” on the pop up afterwards.  
-  <img alt="Remote Desktop Connection" src="./images/conectRaspRemote.png" width="500" />  
-5 Login Raspberry Pi.  
-  <img alt="login raspberrypi" src="./images/loginRaspberrypi.png" width="500" />  
-6 Raspberry Pi can be directly operated through a computer.  
+2. Update system packages & install XRDP
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install xrdp
+    ```
+3. Check the IP address of Raspbery Pi.  
+    ```bash
+    hostname -I
+    or
+    ip -br a
+    ```  
+4. Open the Remote Desktop Connection application and enter the Raspberry Pi IP then click “Connect” and “Yes” on the pop up afterwards.  
+    <img alt="Remote Desktop Connection" src="./images/conectRaspRemote.png" width="500" />  
+5. Login Raspberry Pi.  
+    <img alt="login raspberrypi" src="./images/loginRaspberrypi.png" width="500" />  
+6. Raspberry Pi can be directly operated through a computer.  
 
 #### B. Calibration PH sensor and TDS sensor
 **PH Sensor**  
--->**Raspberry Pi**
-1. Sambungkan Raspberry Pi dengan sensor pH melalui ADC module sesuai dengan [Schematics Diagram](###iii-schematics-diagram).
+->**Raspberry Pi**
+1. Connect the Raspberry Pi with the pH sensor through the ADC module according to the [Schematics Diagram](#iii-schematics-diagram).
+2. Clean the sensor probe and insert it into the buffer solution (pH 4.0 or 7.0).
+3. Run the following [program code](./code/IoT/ph_calibrate.py), then the sensor will automatically calibrate.
+> Make sure the adafruit-circuitpython-ads1x15 and DFRobot_PH libraries are installed.  
 
+->**Arduino Uno**
+1. Connect the Arduino with the pH sensor and upload [the following code](./code/IoT/ph_calibrate.ino) to the board, after that put it into the buffer solution (pH 4.0 or 7.0).
+    <img alt="ph connection arduino" src="./images/SEN0161-V2_Connection.png" width="500" /> 
+2. Run the code.
+3. When the pH value is stable, enter the command `enterph` in the serial monitor to enter calibration mode.
+4. Enter `calph` command in the serial monitor to start calibration. The program will automatically identify the buffer solution used. 
+5. After calibration, enter the `exitph` command in the serial monitor to exit the calibration mode and save the calibration results.
+6. Perform the previous steps on a different buffer solution from the previous step.
+    > Make sure the DFRobot_PH library is installed.
 
-**TDS Sensor**
-#### C. Training Model
+**TDS Sensor**  
+->**Arduino Uno**
+1. Connect the Arduino with the TDS sensor and upload [the following code](./code/IoT/tds_calibrate.ino).  
+    <img alt="tds connection arduino" src="./images/SEN0244_Connection.png" width="500"/>
+2. Clean the TDS probe then put it into the solution buffer and run the code.
+3. After the ppm value is stable, enter the `enter` command in the serial monitor to enter the calibration mode.
+4. Enter the command `cal:tds` to start calibration. The “tds” value is the ppm content read by the sensor in numeric form.
+5. Enter the `exit` command to save the calibration results and exit the calibration mode. 
+> Make sure the DFRobot Gravity TDS sensor library is installed. 
+
+#### C. Connect the Camera with the Raspberry Pi
+1. Connect the Raspberry Pi with the Pi Camera Module (ensure Raspberry Pi is turned off).  
+    <img alt="connect camera to rasp" src="./images/connect-camera.gif" width="500"/>
+2. Reboot Raspberry Pi.
+3. Update system packages & update firmware and kernel.
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    sudo rpi-update
+    ```
+4. Make configuration changes to the `/boot/config.txt` or `/boot/firmware/config.txt` file by adding the following code, then reboot.
+    ```bash
+    # ubah start_x=1 menjadi
+    camera_auto_detect=1
+    
+    # ubah gpu_mem=128 menjadi
+    gpu_mem=256
+    ```
+5. Reboot Raspberry Pi.
+6. Test the camera with the following command.
+    ```bash
+    libcamera-hello
+    or
+    rpicam-hello
+    ```
+
+#### D. Training Model
+
+#### E. Sistem Pemberian Nutrisi Otomatis dan Deteksi Penyakit  
 
