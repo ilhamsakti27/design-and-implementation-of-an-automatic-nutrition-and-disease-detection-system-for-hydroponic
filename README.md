@@ -1,4 +1,4 @@
-# Automation Nutrition and Disease Detection Spinach Hydroponics on Raspberry Pi
+# Automation of Nutrition and Disease Detection in Hydroponic Spinach
 
 ## Intoduction
 
@@ -117,11 +117,11 @@ In the model building process, the first step is to load the dataset, then divid
 4. Enter `calph` command in the serial monitor to start calibration. The program will automatically identify the buffer solution used. 
 5. After calibration, enter the `exitph` command in the serial monitor to exit the calibration mode and save the calibration results.
 6. Perform the previous steps on a different buffer solution from the previous step.
-    > Make sure the DFRobot_PH library is installed.
+> Make sure the DFRobot_PH library is installed.
 
 **TDS Sensor**  
 ->**Arduino Uno**
-1. Connect the Arduino with the TDS sensor and upload [the following code](./code/IoT/tds_calibrate.ino).  
+1. Connect the Arduino with the TDS sensor and upload [the following code](./code/IoT/tds_calibrate.ino).    
     <img alt="tds connection arduino" src="./images/SEN0244_Connection.png" width="500"/>
 2. Clean the TDS probe then put it into the solution buffer and run the code.
 3. After the ppm value is stable, enter the `enter` command in the serial monitor to enter the calibration mode.
@@ -156,6 +156,8 @@ In the model building process, the first step is to load the dataset, then divid
     ```
 
 #### D. Training Model
+
+
 
 #### E. Sistem Pemberian Nutrisi Otomatis dan Deteksi Penyakit  
 
