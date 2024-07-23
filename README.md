@@ -112,7 +112,7 @@ In the model building process, the first step is to load the dataset, then divid
 > Make sure the adafruit-circuitpython-ads1x15 and DFRobot_PH libraries are installed.  
 
 ->**Arduino Uno**
-1. Connect the Arduino with the pH sensor and upload [the following code](./code/IoT/ph_calibrate.ino) to the board, after that put it into the buffer solution (pH 4.0 or 7.0).
+1. Connect the Arduino with the pH sensor and upload [the following code](./code/IoT/ph_calibrate.ino) to the board, after that put it into the buffer solution (pH 4.0 or 7.0).  
     <img alt="ph connection arduino" src="./images/SEN0161-V2_Connection.png" width="500" /> 
 2. Run the code.
 3. When the pH value is stable, enter the command `enterph` in the serial monitor to enter calibration mode.
@@ -314,7 +314,7 @@ accuracy: 96,76%
 |             Sehat |      1,00 |   1,00 |     1,00 |
 |    Virus Keriting |      0,86 |   0,80 |     0,83 |
 
-**Confusion Matrix Result**
+**Confusion Matrix Result**  
 <img alt="confusion matrix result" src="./results/hasil_model_confusion matrix_dataset daun tunggal.png" width="500"/>  
 
 
@@ -335,5 +335,5 @@ accuracy: 96,76%
 |             Sehat |      0,67 |   0,53 |     0,59 |
 |    Virus Keriting |      0,79 |   0,73 |     0,76 |
 
-**Confusion Matrix Result**
+**Confusion Matrix Result**  
 <img alt="confusion matrix result Using Data Field Data" src="./results/mobilenet_confusion matrix_dataset daun banyak.png" width="500"/>  
