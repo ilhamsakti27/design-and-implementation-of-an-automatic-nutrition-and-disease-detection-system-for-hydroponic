@@ -1,6 +1,6 @@
 # Automation of Nutrition and Disease Detection in Hydroponic Spinach
 
-## Intoduction
+## Introduction
 
 ### I. Project Name
 DESIGN AND IMPLEMENTATION OF AN AUTOMATIC NUTRITION AND DISEASE DETECTION SYSTEM FOR HYDROPONIC SPINACH PLANTS USING RASPBERRY PI
