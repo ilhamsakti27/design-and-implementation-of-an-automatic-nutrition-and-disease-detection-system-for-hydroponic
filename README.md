@@ -42,6 +42,8 @@ March 2024 - July 2024
 #### Software
 | Item | Description | 
 | ---- | ----------- | 
+| Raspberry Pi Imager (app) | Application for installing the Raspberry Pi operating system |
+| TensorFlow Lite (TFLite) | An open-source framework that enables running machine learning (ML) models trained with Tensorflow on mobile and embedded devices. |
 | Blynk (web dashboard) | To display predictions of plant disease classification, temperature & humidity values, and pH & ppm content of nutrient solutions. |
 | BlynkLib (library) | To send data from Raspberry Pi to Blynk. |
 | adafruit-circuitpython-ads1x15 (packages) [version 2.2.25] | Driver for Adafruit's ADS1x15 ADC (Analog-to-Digital Converters) used with CircuitPython. |
@@ -83,7 +85,7 @@ In the model building process, the first step is to load the dataset, then divid
 
 **Remote**
 1. To access the Raspberry Pi remotely, you can use XRDP.  
-2. Update system packages & install XRDP
+2. Update system packages & install XRDP.
     ```bash
     sudo apt update
     sudo apt upgrade
@@ -156,8 +158,182 @@ In the model building process, the first step is to load the dataset, then divid
     ```
 
 #### D. Training Model
+In this research, researcher used the [dataset bayam daun tunggal](./code/Dataset/dataset_bayam%20(daun%20tunggal).zip) to create a spinach disease classification model through the image captured by the camera. The training process was conducted at [Google Collaboratory](https://colab.research.google.com/).The following are the steps in training the model in this study.
+1. Upload [the following code](./code/AI/Training%20Model.ipynb) and dataset in [Google Collaboratory](https://colab.research.google.com/).
+2. Connect to a runtime.
+3. Run all the code.
+4. Once done, download the model in tflite format.
+
+#### Blynk Dashboard
+1. Login [Blynk](https://blynk.cloud/).  
+2. Select menu "Developer Zone" -> "My Templates" -> click "New Template" to add a new template.
+    <img alt="new template" src="./images/blynk_new template.png" width="500"/>
+3. Fill pop up "Create New Template".  
+    <img alt="create new template" src="./images/blynk_create new template.png" width="400"/>
+4. Create data stream for each data obtained from the sensor.  
+    <img alt="create datastream" src="./images/blynk_create datastream.png" width="400"/>
+    |   Jenis Pin |              Name | Pin | Data Type |                 Units |  Min |  Max |
+    | ----------- | ----------------- | --- | --------- | --------------------- | ---- | ---- |
+    | Virtual Pin | Prediksi Penyakit |  V4 |    String |                     - |    - |    - |
+    | Virtual Pin |    Sensor Nutrisi |  V3 |    Double | Parts Per Milion, ppm |    0 | 2000 |
+    | Virtual Pin |         Sensor pH |  V2 |    Double |                  None |    0 |   14 |
+    | Virtual Pin |        SHTC3_Suhu |  V1 |    Double |           Celcius, °C |  -40 |  125 |
+    | Virtual Pin |  SHTC3_Kelembaban |  V0 |    Double |         Precentage, % |    0 |  100 |
+5. Creating a web dashboard as an interface that allows to monitor plant conditions remotely through a web browser.
+    <img alt="web dashboard" src="./images/blynk_create web dashboard.png"/>
+    | Widget Box |             Title |             Datastream |
+    | ---------- | ----------------- | ---------------------- |
+    |      Label | Prediksi Penyakit | Prediksi Penyakit (V4) |
+    |      Gauge |     Kadar Nutrisi |    Sensor Nutrisi (V3) |
+    |      Gauge |                pH |         Sensor pH (V2) |
+    |      Gauge |              Suhu |        SHTC3_Suhu (V1) |
+    |      Gauge |        Kelembaban |  SHTC3_Kelembaban (V0) |
+    |      Chart |         Kadar PPM |    Sensor Nutrisi (V3) |
+    |      Chart |          Kadar pH |         Sensor pH (V2) |
+    |      Chart |              Suhu |        SHTC3_Suhu (V1) |
+    |      Chart |        Kelembaban |  SHTC3_Kelembaban (V0) |
+6. Then click "Save And Play".
+7. After that, add the device by clicking "New Device" -> "From template".  
+    <img alt="add device blynk" src="./images/blynk_add device.png" width="500"/>  
+    <img alt="add new device" src="./images/blynk_add new device.png" width="500"/>  
+8. Select the "Raspberry Pi 4B" template and name it the same name.  
+    <img alt="new device blynk" src="./images/blynk_new device.png" width="500"/>  
+9. Finish.
 
 
+#### F. Automation Nutrition and Disease Detection System
+1. Connect the device according to the [schematics diagram](#iii-schematics-diagram) and after that turn on the Raspberry Pi.
+2. Connect the Raspberry Pi to the internet.
+3. Update system packages.
+    ```bash
+    sudo apt update && sudo apt upgrade
+    ```
+4. Create and activate a virtual environment.
+    ```bash
+    mkdir project && cd project
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+5. Install dependencies.
+    ```bash
+    pip3 install adafruit-circuitpython-shtc3 adafruit-circuitpython-ads1x15 RPi.GPIO tflite-runtime image pillow numpy pytz
+    ```
+6. Upload [automation nutrition and disease detection code](./code/IoT/ta-script.py) and model on Raspberry Pi.
+7. Run the code with the following command.
+    ```bash
+    python3 ta-script.py
+    ``` 
+8. The results of disease prediction and the pH and ppm content values of the solution as well as temperature and humidity values can be seen on the Blynk Dashboard.
 
-#### E. Sistem Pemberian Nutrisi Otomatis dan Deteksi Penyakit  
+### VII. Result
+#### Blynk Dashboard
+<img alt="Blynk Dashboard" src="./results/hasil_blynk_dashboard_6.png"/>  
 
+#### Hydroponic Installation
+<img alt="Hydroponic Installation" src="./results/0_hasil%20implementasi%20rancangan%20ta.jpg" width="500"/>  
+<img alt="Hydroponic Installation" src="./results/0_hasil%20implementasi%20rancangan%20ta_3.jpg" width="500"/>  
+<img alt="Hydroponic Installation" src="./results/0_hasil%20implementasi%20rancangan%20ta_10.jpg" width="500"/>  
+<img alt="Hydroponic Installation" src="./results/0_hasil%20implementasi%20rancangan%20ta_8.jpg" width="500"/>  
+
+#### Sensor
+**Temperature Sensor**  
+accuracy: 99,05%
+| Test | Actual Value (°C) | Sensor Value (°C) |
+| ---- | ----------------- | ----------------- |
+| 1 | 31 | 31 |
+| 2 | 30 | 30 |
+| 3 | 31 | 32 |
+| 4 | 29 | 29 |
+| 5 | 32 | 32 |
+| 6 | 34 | 34 |
+| 7 | 33 | 34 |
+| 8 | 36 | 36 |
+| 9 | 34 | 35 |
+| 10| 26 | 26 |
+
+**Humidity Sensor**  
+accuracy: 99,54%
+| Test | Actual Value (%) | Sensor Value (%) |
+| ---- | ----------------- | ----------------- |
+| 1 | 74 | 74 |
+| 2 | 70 | 70 |
+| 3 | 69 | 69 |
+| 4 | 72 | 72 |
+| 5 | 72 | 72 |
+| 6 | 64 | 64 |
+| 7 | 55 | 56 |
+| 8 | 56 | 57 |
+| 9 | 55 | 56 |
+| 10| 60 | 60 |
+
+**PH Sensor**  
+accuracy: 98,60%
+| Test | Actual Value | Sensor Value |
+| ---- | ----------------- | ----------------- |
+| 1 | 2,6 | 2,5 |
+| 2 | 3,3 | 3,3 |
+| 3 | 4,1 | 4,0 |
+| 4 | 5,3 | 5,2 |
+| 5 | 6,4 | 6,5 |
+| 6 | 7,0 | 6,9 |
+| 7 | 7,3 | 7,4 |
+| 8 | 8,1 | 8,0 |
+| 9 | 9,2 | 9,1 |
+| 10| 11,1 | 11,0 |
+
+**TDS Sensor**  
+accuracy: 96,76%
+| Test | Actual Value (ppm) | Sensor Value (ppm) |
+| ---- | ----------------- | ----------------- |
+| 1 | 5 | 5 |
+| 2 | 291 | 298 |
+| 3 | 328 | 346 |
+| 4 | 475 | 532 |
+| 5 | 540 | 536 |
+| 6 | 684 | 643 |
+| 7 | 749 | 747 |
+| 8 | 867 | 842 |
+| 9 | 927 | 938 |
+| 10| 1.052 | 1.025 |
+
+#### Model
+**Model Evaluation Results Using Data from Datasets**
+|                                 Model | Epoch | Akurasi | Ukuran File Model |
+| ------------------------------------- | ----- | ------- | ----------------- |
+|                                   CNN |   100 |     87% |            4,62MB | 
+| Transfer Learning dengan MobileNet V2 |   100 |     92% |            2,54MB | 
+| Transfer Learning dengan Inception V3 |   100 |     93% |           21,31MB | 
+| Transfer Learning dengan ResNet50     |   100 |     48% |           23,06MB | 
+| Transfer Learning dengan DesNet121    |   100 |     88% |            7,19MB | 
+
+**Classification Report Model Results with MobileNetV2 from Datasets**
+|             Class | Precision | Recall | F1-Score |
+| ----------------- | --------- | ------ | -------- |
+|       Karat Putih |      0,81 |   0,87 |     0,84 |
+| Kekurangan Mangan |      1,00 |   1,00 |     1,00 |
+|             Sehat |      1,00 |   1,00 |     1,00 |
+|    Virus Keriting |      0,86 |   0,80 |     0,83 |
+
+**Confusion Matrix Result**
+<img alt="confusion matrix result" src="./results/hasil_model_confusion matrix_dataset daun tunggal.png" width="500"/>  
+
+
+**Model Evaluation Results Using Data Field Data**
+|                                 Model | Epoch | Akurasi | Ukuran File Model |
+| ------------------------------------- | ----- | ------- | ----------------- |
+|                                   CNN |   100 |     29% |            4,62MB | 
+| Transfer Learning dengan MobileNet V2 |   100 |     57% |            2,54MB | 
+| Transfer Learning dengan Inception V3 |   100 |     27% |           21,31MB | 
+| Transfer Learning dengan ResNet50     |   100 |     29% |           23,06MB | 
+| Transfer Learning dengan DesNet121    |   100 |     30% |            7,19MB | 
+
+**Classification Report Model Results with MobileNetV2 Using Data Field Data**
+|             Class | Precision | Recall | F1-Score |
+| ----------------- | --------- | ------ | -------- |
+|       Karat Putih |      0,35 |   0,55 |     0,43 |
+| Kekurangan Mangan |      0,54 |   0,47 |     0,50 |
+|             Sehat |      0,67 |   0,53 |     0,59 |
+|    Virus Keriting |      0,79 |   0,73 |     0,76 |
+
+**Confusion Matrix Result**
+<img alt="confusion matrix result Using Data Field Data" src="./results/mobilenet_confusion matrix_dataset daun banyak.png" width="500"/>  
